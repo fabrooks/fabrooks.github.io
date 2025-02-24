@@ -1,0 +1,36 @@
+---
+title: "Open Letter"
+execute:
+  echo: false
+---
+
+```{ojs}
+viewof strRecipient = Inputs.text({label: "Recipient Name"})
+viewof strAuthor = Inputs.text({label: "Sender Name"})
+```
+
+Dear Mayor \${strRecipient},
+
+I am writing today to spread awareness of an imminent threat facing new york city, storm surges. Did you know that, right now, 361 census tracts are under threat of storm surge in New York City? And not only that, it is projected that by the year 2080 that number will nearly double to 612 census tracts under threat of storm surge. That's over a quarter of the city! Just look at how bad it's going to be!
+
+![image](./TidalWave.jfif)
+
+Just kidding! But while I don't think it's going to be as bad as it is in the movies, storm surges and flooding are already wreaking havoc in the city. Below is a news story from 2023 about dangers from storms in the city.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/5LnDkdgzLk8?si=NaU8hRMCwLXnCvEi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+
+</iframe>
+
+As you can see this is a major problem for both the future of NYC and the present day. Below is a list of items that I think the city should take to reduce the threat of storm surges
+
+1.  Housing improvements. Buildings that exist in areas that have the potential for storm surges in the future should be updated to be able to handle those storms.
+2.  Awareness. Residents in zones that are at risk for storm surges should be made aware of the risks in case of future emergencies.
+3.  Engineering. Create additional ways for the city to allow water to runoff such as underground tanks. This allows the city to deal with excess water during a storm.
+
+I have also created a dashboard that displays the census tracts that are under risk and the severity of the potential for storm surges. The link to that storm surge dashboard can be found [here](https://www.arcgis.com/apps/dashboards/581b9c0a72994ad48e92efdbfac21195)
+
+If you wish to look further into this issue and explore the data for yourself, the data can be found below. Alternatively it can also be found from the NYC open data site [here](https://data.cityofnewyork.us/Environment/New-York-City-s-Flood-Vulnerability-Index/mrjc-v9pm/about_data)
+
+Sincerely,
+
+\${strAuthor}

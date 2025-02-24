@@ -1,0 +1,30 @@
+project:
+  type: website
+
+website:
+  title: "WebGIS Arthur Brooks"
+  navbar:
+    pinned: true
+    left:
+      - href: index.qmd
+        text: Home
+    right:
+      - about.qmd
+      - text: "Storm Surge Project"
+        menu: 
+          - href: lettertomayor.qmd
+            icon: newspaper
+          - href: dashboard.qmd
+            icon: map
+          - href: stormsurgedata.qmd
+            icon: database-fill
+          # target: _blank
+
+format:
+  html:
+    theme: quartz
+    css: styles.css
+    toc: true
+
+editor: visual
+

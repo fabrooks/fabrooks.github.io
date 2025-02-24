@@ -1,0 +1,15 @@
+---
+title: "About"
+---
+
+# All about Arthur!
+
+I am currently in my first year of the GeoInformatics MS program at Hunter College. My intended specialty is working with spatial databases but I'm happily exploring everything the geospatial world has to offer!
+
+## My interests, personal and academic
+
+As it says on the front page of this website, the work that I like to do is largely database work. I currently work as an analytics engineer for the Natural Resources Defense Council helping run their database for operations. I am enrolled in this geoinformatics program to be able to offer extended help to the organization with geospatial data!
+
+One of my greatest passions is swimming, especially open water swimming! New York City is a superb locale for getting out into the water (well maybe not the Hudson after it rains) and during the summer you can find me at Brighton Beach every weekend swimming between Tatiana's and the Coney Island Pier.
+
+My passion for the water influences the geospatial data that I find most interesting which is the city's changing waterfront and its relationship with the waters that surround it. Come talk waterfront with me!

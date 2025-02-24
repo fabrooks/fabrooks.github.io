@@ -1,0 +1,19 @@
+---
+title: "Dashboard"
+execute:
+  echo: false
+---
+
+## Storm Surge Dashes
+
+Below is a map that I created that shows a census tract breakdown of storm surge risks.
+
+<!-- Add script to the <head> of your page to load the embeddable map component -->
+
+```{=html}
+<script type="module" src="https://js.arcgis.com/embeddable-components/4.31/arcgis-embeddable-components.esm.js"></script>
+```
+
+<!-- Add custom element to <body> of your page -->
+
+<arcgis-embedded-map style="height:600px;width:700px;" item-id="b2073fae2d7e4b03af8a5900345a94f0" theme="light" portal-url="https://hunter.maps.arcgis.com" heading-enabled legend-enabled ></arcgis-embedded-map>
