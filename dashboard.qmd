@@ -6,7 +6,7 @@ execute:
 
 ## Storm Surge Dashes
 
-Below is a map that I created that shows a census tract breakdown of storm surge risks.
+Below is a map that I created that shows a census tract breakdown of storm surge risks. Click on any of the census tracts to see additional storm surge data!
 
 ::: {.column-screen}
 

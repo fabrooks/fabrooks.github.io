@@ -29,7 +29,7 @@ As you can see this is a major problem for both the future of NYC and the presen
 
 I have also created a dashboard that displays the census tracts that are under risk and the severity of the potential for storm surges. The link to that storm surge dashboard can be found [here](https://www.arcgis.com/apps/dashboards/581b9c0a72994ad48e92efdbfac21195)
 
-If you wish to look further into this issue and explore the data for yourself, the data can be found below. Alternatively it can also be found from the NYC open data site [here](https://data.cityofnewyork.us/Environment/New-York-City-s-Flood-Vulnerability-Index/mrjc-v9pm/about_data)
+If you wish to look further into this issue and explore the data for yourself, the data can be found from the NYC open data site [here](https://data.cityofnewyork.us/Environment/New-York-City-s-Flood-Vulnerability-Index/mrjc-v9pm/about_data)
 
 Sincerely,
 

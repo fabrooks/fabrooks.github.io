@@ -2,7 +2,7 @@
 title: "WebGIS Arthur Brooks"
 ---
 
-Welcome to my Quarto website! This site is dedicated to the projects that I create in WebGIS at Hunter university!
+Welcome to my Quarto website! This site is dedicated to the projects that I create in WebGIS at Hunter College!
 
 ![image](./CityImage.jpg)
 
