@@ -10,6 +10,7 @@ website:
         text: Home
     right:
       - about.qmd
+      - codesnippets.qmd
       - text: "Storm Surge Project"
         menu: 
           - href: lettertomayor.qmd

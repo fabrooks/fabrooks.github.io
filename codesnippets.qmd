@@ -1,0 +1,176 @@
+---
+title: "Code Samples"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+highlight-style: solarized
+---
+
+This page shows a series of coding challenges that I've worked on for my WebGIS class! They are all interactive so feel free to play around! I've included all of the code (press the code buttons to expand and see the code) so you can check it out! Let me know if any of them aren't working as expected or if there's a better way to approach a problem!
+
+## Countdown to World Cup 2026!
+
+Below is a function that will tell you the length of time until the next world cup from today! The output shows a running output of the time until that date formatted as years:weeks:days:hours:minutes:seconds!
+
+```{ojs}
+
+viewof worldCupDateV = Inputs.datetime({label: "2026 World Cup Final", value: "2026-07-19T16:00"});
+
+
+function getDaysCount() {
+  // Calculate time segments in milliseconds
+  const second = 1000;
+  const minute = 1000 * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+  const week = day * 7;
+  const year = day * 365;
+  let d = new Date();
+  //Set array of time segment and initiate empty variables
+  let datesArray = [year, week, day, hour, minute, second], diffTimesArray = [], diffTime = 0;
+  //Time in milliseconds between the world cup and now
+  let worldCupTime = worldCupDateV.getTime();
+  let dateDiff = worldCupTime - d.getTime();
+
+  // Iterate through all of date types
+  for(var i = 0; i < datesArray.length; i++) {
+    //Get the value for the type of time segment
+    diffTime = Math.floor(dateDiff / datesArray[i]);
+    //Add the value for that date type to the diffTimesArray
+    diffTimesArray.push(diffTime);
+    //Remove the time caluclated by the previous step. 
+    //E.g. if it's one year away, remove one year's worth of time from the date difference
+    dateDiff = dateDiff - (diffTime * datesArray[i]);
+  }
+  document.getElementById("dateTimer").innerHTML = diffTimesArray.join(":") + ' is the current time until the World Cup!';
+  //return diffTimesArray.join(":") + ' is the current time until the World Cup!';
+}
+//yield Promises.tick(1000, getDaysCount())
+myInterval = setInterval(getDaysCount, 1000);
+//If the code below is not included then this code block is rerun and multiple timers are active with different dates
+invalidation.then(() => clearInterval(myInterval));
+
+```
+
+<p id = "dateTimer">
+
+<p>
+
+## Soundex
+
+Below is a function that takes a word and returns the soundex return for that word! If you'd like, you can even type in a comma separated list and receive the soundex for every word in the list!
+
+```{ojs}
+viewof nameVar = Inputs.text({label: "Name", value: "Washington"})
+
+function soundex(name)
+{
+    let s = [];
+    let si = 1;
+    let c;
+
+    //              ABCDEFGHIJKLMNOPQRSTUVWXYZ
+    let mappings = "01230120022455012623010202";
+
+    s[0] = name[0].toUpperCase();
+
+    for(let i = 1, l = name.length; i < l; i++)
+    {
+        c = (name[i].toUpperCase()).charCodeAt(0) - 65;
+
+        if(c >= 0 && c <= 25)
+        {
+            if(mappings[c] != '0')
+            {
+                if(mappings[c] != s[si-1])
+                {
+                    s[si] = mappings[c];
+                    si++;
+                }
+
+                if(si > 3)
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+    if(si <= 3)
+    {
+        while(si <= 3)
+        {
+            s[si] = '0';
+            si++;
+        }
+    }
+
+    return s.join("");
+} 
+
+function soundexNames(listOfNames) {
+  let soundexDict = []
+  let arrayOfNames = listOfNames.trim().split(',').map(x => x.trim())
+  for(var i = 0; i < arrayOfNames.length; i++) {
+    soundexDict.push(soundex(arrayOfNames[i]))
+  }
+  return soundexDict.join(", ")
+}
+```
+
+\${soundexNames(nameVar)} is the soundex array for \${nameVar}
+
+## Word Joins
+
+Below is a function that takes a comma separated list of names and returns the list in a much nicer format!
+
+```{ojs}
+viewof multiNameVar = Inputs.text({label: "Name", value: "   Washington,Adams,Jefferson"})
+```
+
+```{ojs}
+function printMultiNames(multiNames) {
+  // Get list of names and initiate variables
+  let nameArray = multiNames.trim().split(',').map(x => x.trim())
+  let joinedNames = '', finalName = '';
+  
+  if  (nameArray.length == 1) {
+    // if list of names = 1 return just the string
+    joinedNames = nameArray[0];
+  } else if (nameArray.length == 2) {
+    // If list of names = 2 return the two values separated by and
+    finalName = nameArray.pop()
+    joinedNames = nameArray.join(", ") + " and " + finalName;
+  }else {
+    // If list of names = 2 return up to the last element joined with commas and then join in the last element with "and"
+    finalName = nameArray.pop()
+    joinedNames = nameArray.join(", ") + ", and " + finalName;
+  }
+  
+  // return nameArray.join(", ");
+  return joinedNames
+}
+
+```
+
+\${printMultiNames(multiNameVar)}
+
+## Beatify Rank Joins
+
+Here is a function that takes a ranking between 1 and 12 and returns how it would be viewed both in Text formats, e.g. first, or in numeric formats, e.g. 1st.
+
+```{ojs}
+viewof inputNum = Inputs.range([1, 12], {step: 1, label: "Rank",})
+viewof inputsTextType = Inputs.radio(["Text", "Numeric"], {label: "Text output style", value: "Text"})
+
+
+function beautifyRank(num, textType) {
+  let textArray = ['First','Second','Third','Fourth','Fifth','Sixth','Seventh','Eighth','Ninth','Tenth','Eleventh','Twelfth'];
+  let numericArray = ['1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th','11th','12th'];
+  let BeautifiedText = (textType == 'Text') ? textArray[num-1] : numericArray[num-1];
+  return BeautifiedText;
+}
+```
+
+\${beautifyRank(inputNum, inputsTextType)} is the \${inputsTextType} format for rank \${inputNum}

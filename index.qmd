@@ -7,3 +7,5 @@ Welcome to my Quarto website! This site is dedicated to the projects that I crea
 ![image](./CityImage.jpg)
 
 This site is currently a work in progress so check back later for more updates! Happy mapping!
+
+The site is hosted on github and running via github pages. The site was created using quarto.
