@@ -11,7 +11,42 @@
     "href": "index.html",
     "title": "WebGIS Arthur Brooks",
     "section": "",
-    "text": "Welcome to my Quarto website! This site is dedicated to the projects that I create in WebGIS at Hunter College!\n\n\n\nimage\n\n\nThis site is currently a work in progress so check back later for more updates! Happy mapping!"
+    "text": "Welcome to my Quarto website! This site is dedicated to the projects that I create in WebGIS at Hunter College!\n\n\n\nimage\n\n\nThis site is currently a work in progress so check back later for more updates! Happy mapping!\nThe site is hosted on github and running via github pages. The site was created using quarto."
+  },
+  {
+    "objectID": "codesnippets.html",
+    "href": "codesnippets.html",
+    "title": "Code Samples",
+    "section": "",
+    "text": "This page shows a series of coding challenges that I’ve worked on for my WebGIS class! They are all interactive so feel free to play around! I’ve included all of the code (press the code buttons to expand and see the code) so you can check it out! Let me know if any of them aren’t working as expected or if there’s a better way to approach a problem!"
+  },
+  {
+    "objectID": "codesnippets.html#countdown-to-world-cup-2026",
+    "href": "codesnippets.html#countdown-to-world-cup-2026",
+    "title": "Code Samples",
+    "section": "Countdown to World Cup 2026!",
+    "text": "Countdown to World Cup 2026!\nBelow is a function that will tell you the length of time until the next world cup from today! The output shows a running output of the time until that date formatted as years:weeks:days:hours:minutes:seconds!\n\n\nCode\nviewof worldCupDateV = Inputs.datetime({label: \"2026 World Cup Final\", value: \"2026-07-19T16:00\"});\n\n\nfunction getDaysCount() {\n  // Calculate time segments in milliseconds\n  const second = 1000;\n  const minute = 1000 * 60;\n  const hour = minute * 60;\n  const day = hour * 24;\n  const week = day * 7;\n  const year = day * 365;\n  let d = new Date();\n  //Set array of time segment and initiate empty variables\n  let datesArray = [year, week, day, hour, minute, second], diffTimesArray = [], diffTime = 0;\n  //Time in milliseconds between the world cup and now\n  let worldCupTime = worldCupDateV.getTime();\n  let dateDiff = worldCupTime - d.getTime();\n\n  // Iterate through all of date types\n  for(var i = 0; i &lt; datesArray.length; i++) {\n    //Get the value for the type of time segment\n    diffTime = Math.floor(dateDiff / datesArray[i]);\n    //Add the value for that date type to the diffTimesArray\n    diffTimesArray.push(diffTime);\n    //Remove the time caluclated by the previous step. \n    //E.g. if it's one year away, remove one year's worth of time from the date difference\n    dateDiff = dateDiff - (diffTime * datesArray[i]);\n  }\n  document.getElementById(\"dateTimer\").innerHTML = diffTimesArray.join(\":\") + ' is the current time until the World Cup!';\n  //return diffTimesArray.join(\":\") + ' is the current time until the World Cup!';\n}\n//yield Promises.tick(1000, getDaysCount())\nmyInterval = setInterval(getDaysCount, 1000);\n//If the code below is not included then this code block is rerun and multiple timers are active with different dates\ninvalidation.then(() =&gt; clearInterval(myInterval));"
+  },
+  {
+    "objectID": "codesnippets.html#soundex",
+    "href": "codesnippets.html#soundex",
+    "title": "Code Samples",
+    "section": "Soundex",
+    "text": "Soundex\nBelow is a function that takes a word and returns the soundex return for that word! If you’d like, you can even type in a comma separated list and receive the soundex for every word in the list!\n\n\nCode\nviewof nameVar = Inputs.text({label: \"Name\", value: \"Washington\"})\n\nfunction soundex(name)\n{\n    let s = [];\n    let si = 1;\n    let c;\n\n    //              ABCDEFGHIJKLMNOPQRSTUVWXYZ\n    let mappings = \"01230120022455012623010202\";\n\n    s[0] = name[0].toUpperCase();\n\n    for(let i = 1, l = name.length; i &lt; l; i++)\n    {\n        c = (name[i].toUpperCase()).charCodeAt(0) - 65;\n\n        if(c &gt;= 0 && c &lt;= 25)\n        {\n            if(mappings[c] != '0')\n            {\n                if(mappings[c] != s[si-1])\n                {\n                    s[si] = mappings[c];\n                    si++;\n                }\n\n                if(si &gt; 3)\n                {\n                    break;\n                }\n            }\n        }\n    }\n\n    if(si &lt;= 3)\n    {\n        while(si &lt;= 3)\n        {\n            s[si] = '0';\n            si++;\n        }\n    }\n\n    return s.join(\"\");\n} \n\nfunction soundexNames(listOfNames) {\n  let soundexDict = []\n  let arrayOfNames = listOfNames.trim().split(',').map(x =&gt; x.trim())\n  for(var i = 0; i &lt; arrayOfNames.length; i++) {\n    soundexDict.push(soundex(arrayOfNames[i]))\n  }\n  return soundexDict.join(\", \")\n}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n is the soundex array for"
+  },
+  {
+    "objectID": "codesnippets.html#word-joins",
+    "href": "codesnippets.html#word-joins",
+    "title": "Code Samples",
+    "section": "Word Joins",
+    "text": "Word Joins\nBelow is a function that takes a comma separated list of names and returns the list in a much nicer format!\n\n\nCode\nviewof multiNameVar = Inputs.text({label: \"Name\", value: \"   Washington,Adams,Jefferson\"})\n\n\n\n\n\n\n\n\n\nCode\nfunction printMultiNames(multiNames) {\n  // Get list of names and initiate variables\n  let nameArray = multiNames.trim().split(',').map(x =&gt; x.trim())\n  let joinedNames = '', finalName = '';\n  \n  if  (nameArray.length == 1) {\n    // if list of names = 1 return just the string\n    joinedNames = nameArray[0];\n  } else if (nameArray.length == 2) {\n    // If list of names = 2 return the two values separated by and\n    finalName = nameArray.pop()\n    joinedNames = nameArray.join(\", \") + \" and \" + finalName;\n  }else {\n    // If list of names = 2 return up to the last element joined with commas and then join in the last element with \"and\"\n    finalName = nameArray.pop()\n    joinedNames = nameArray.join(\", \") + \", and \" + finalName;\n  }\n  \n  // return nameArray.join(\", \");\n  return joinedNames\n}"
+  },
+  {
+    "objectID": "codesnippets.html#beatify-rank-joins",
+    "href": "codesnippets.html#beatify-rank-joins",
+    "title": "Code Samples",
+    "section": "Beatify Rank Joins",
+    "text": "Beatify Rank Joins\nHere is a function that takes a ranking between 1 and 12 and returns how it would be viewed both in Text formats, e.g. first, or in numeric formats, e.g. 1st.\n\n\nCode\nviewof inputNum = Inputs.range([1, 12], {step: 1, label: \"Rank\",})\nviewof inputsTextType = Inputs.radio([\"Text\", \"Numeric\"], {label: \"Text output style\", value: \"Text\"})\n\n\nfunction beautifyRank(num, textType) {\n  let textArray = ['First','Second','Third','Fourth','Fifth','Sixth','Seventh','Eighth','Ninth','Tenth','Eleventh','Twelfth'];\n  let numericArray = ['1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th','11th','12th'];\n  let BeautifiedText = (textType == 'Text') ? textArray[num-1] : numericArray[num-1];\n  return BeautifiedText;\n}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n is the  format for rank"
   },
   {
     "objectID": "about.html",
