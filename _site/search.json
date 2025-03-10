@@ -53,7 +53,7 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "I am currently in my first year of the GeoInformatics MS program at Hunter College. My intended specialty is working with spatial databases but I’m happily exploring everything the geospatial world has to offer!\n\n\nAs it says on the front page of this website, the work that I like to do is largely database work. I currently work as an analytics engineer for the Natural Resources Defense Council helping run their database for operations. I am enrolled in this geoinformatics program to be able to offer extended help to the organization with geospatial data!\nOne of my greatest passions is swimming, especially open water swimming! New York City is a superb locale for getting out into the water (well maybe not the Hudson after it rains) and during the summer you can find me at Brighton Beach every weekend swimming between Tatiana’s and the Coney Island Pier.\nMy passion for the water influences the geospatial data that I find most interesting which is the city’s changing waterfront and its relationship with the waters that surround it. Come talk waterfront with me!"
+    "text": "I am currently in my first year of the GeoInformatics MS program at Hunter College. My intended specialty is working with spatial databases but I’m happily exploring everything the geospatial world has to offer!\n\n\nAs it says on the front page of this website, the work that I like to do is largely database work. I currently work as an analytics engineer for the Natural Resources Defense Council helping run their database for operations. I am enrolled in this geoinformatics program to be able to offer extended help to the organization with geospatial data!\nOne of my greatest passions is swimming, especially open water swimming! New York City is a superb locale for getting out into the water (well maybe not the Hudson after it rains) and during the summer you can find me at Brighton Beach every weekend swimming between Tatiana’s and the Coney Island Pier.\nMy passion for the water influences the geospatial data that I find most interesting which is the city’s changing waterfront and its relationship with the waters that surround it. Come talk waterfront with me!\n\n\n\nRight now I maintain two branches on github for the repository fabrooks.github.io.\nThe first is the main branch and that contains the entire project including it’s quarto files. My workflow here is to\n\ngit add .\ngit commit -m “whatever I changed”\ngit push origin main\n\nAfterI’ve pushed the original code I then push the _site folder as its own independent branch that github pages uses to create my website!\n\ngit subtree push –prefix _site origin gh-pages\n\nAnd voila! My site is updated!"
   },
   {
     "objectID": "about.html#my-interests-personal-and-academic",
@@ -61,6 +61,13 @@
     "title": "About",
     "section": "",
     "text": "As it says on the front page of this website, the work that I like to do is largely database work. I currently work as an analytics engineer for the Natural Resources Defense Council helping run their database for operations. I am enrolled in this geoinformatics program to be able to offer extended help to the organization with geospatial data!\nOne of my greatest passions is swimming, especially open water swimming! New York City is a superb locale for getting out into the water (well maybe not the Hudson after it rains) and during the summer you can find me at Brighton Beach every weekend swimming between Tatiana’s and the Coney Island Pier.\nMy passion for the water influences the geospatial data that I find most interesting which is the city’s changing waterfront and its relationship with the waters that surround it. Come talk waterfront with me!"
+  },
+  {
+    "objectID": "about.html#how-this-site-is-maintained",
+    "href": "about.html#how-this-site-is-maintained",
+    "title": "About",
+    "section": "",
+    "text": "Right now I maintain two branches on github for the repository fabrooks.github.io.\nThe first is the main branch and that contains the entire project including it’s quarto files. My workflow here is to\n\ngit add .\ngit commit -m “whatever I changed”\ngit push origin main\n\nAfterI’ve pushed the original code I then push the _site folder as its own independent branch that github pages uses to create my website!\n\ngit subtree push –prefix _site origin gh-pages\n\nAnd voila! My site is updated!"
   },
   {
     "objectID": "dashboard.html",

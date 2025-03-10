@@ -13,3 +13,19 @@ As it says on the front page of this website, the work that I like to do is larg
 One of my greatest passions is swimming, especially open water swimming! New York City is a superb locale for getting out into the water (well maybe not the Hudson after it rains) and during the summer you can find me at Brighton Beach every weekend swimming between Tatiana's and the Coney Island Pier.
 
 My passion for the water influences the geospatial data that I find most interesting which is the city's changing waterfront and its relationship with the waters that surround it. Come talk waterfront with me!
+
+## How this site is maintained
+
+Right now I maintain two branches on github for the repository fabrooks.github.io.
+
+The first is the main branch and that contains the entire project including it's quarto files. My workflow here is to
+
+- git add .
+- git commit -m "whatever I changed"
+- git push origin main
+
+AfterI've pushed the original code I then push the _site folder as its own independent branch that github pages uses to create my website!
+
+- git subtree push --prefix _site origin gh-pages
+
+And voila! My site is updated!
