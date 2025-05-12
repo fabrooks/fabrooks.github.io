@@ -182,12 +182,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#brooklyns-changing-waterfront" id="toc-brooklyns-changing-waterfront" class="nav-link active" data-scroll-target="#brooklyns-changing-waterfront">Brooklyn’s Changing Waterfront</a></li>
+  <li><a href="#new-york-citys-changing-waterfront" id="toc-new-york-citys-changing-waterfront" class="nav-link active" data-scroll-target="#new-york-citys-changing-waterfront">New York City’s Changing Waterfront</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -208,9 +208,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="brooklyns-changing-waterfront" class="level1">
-<h1>Brooklyn’s Changing Waterfront</h1>
-<p>Test 1</p>
+<section id="new-york-citys-changing-waterfront" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="new-york-citys-changing-waterfront">New York City’s Changing Waterfront</h2>
+<p>New York City’s waterfront is defined by its constant change, ever shifting to fit the needs of the city. The below map tries to help explain the current state of the waterfront as well as explore historical imagery of how the waterfront used to exist.</p>
+<p>The map below shows the current zoning for areas that exist close to NYC’s water features as well as the water features themselves. Information on the water sources and the zoning types can be discovered by hovering over each section.</p>
+<p>If you find yourself interested in additional NYC zoning laws, I’ve added one more layer which covers all of the special districts of NYC which are created for very specific reasons. All districts, regardless of proximity to water, have been included to show just how many of these districts special uses are based on the waterfront.</p>
+<div class="column-screen">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -220,47 +223,192 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="">
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
-    
+
 <div id="map" ,="" style="height:600px;"></div>
+
 
 <script>
 
-      var map = L.map("map", {
-        zoom: 12,
-        center: [40.6602, -73.9690]
+// Add in map
+  var map = L.map("map", {
+        zoom: 14,
+        center: [40.7022, -73.9871]
+      });
+
+      
+      function getColor(d) {
+          return d == "Manufacturing" ? '#FDCC0D' :
+                d == "Park"  ? '#006B3C' :
+                d == "Residential"  ? '#FFB6C1' :
+                            '#808080';
+      }
+
+      function getStyle(feature) {
+        return {
+            fillColor: getColor(feature.properties.Zoning_Type),
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            dashArray: '3',
+            fillOpacity: 0.7
+        };
+      }
+
+      function zoningLayerAction(feature, l) {
+        
+        l.bindTooltip(feature.properties.Zoning_Type + " is the zoning type for this Zone.");
+
+        l.on("mouseover", (e) => {
+            e.target.setStyle({
+              weight: 3,
+              color: 'black'
+          })
+        })
+
+        l.on("mouseout", (e) => {
+            zoningLayer.resetStyle()
+        })
+
+      }
+      
+      function waterLayerAction(feature, l) {
+        
+        l.bindTooltip("This body of water is " + feature.properties.name);
+
+        l.on("mouseover", (e) => {
+            e.target.setStyle({
+              weight: 3,
+              color: 'black'
+          })
+        })
+
+        l.on("mouseout", (e) => {
+            hydroLayer.resetStyle()
+        })
+
+      }
+      
+      function specialLayerAction(feature, l) {
+        
+        l.bindTooltip("This special zone is called " + feature.properties.SDNAME);
+
+        l.on("mouseover", (e) => {
+            e.target.setStyle({
+              weight: 3,
+              color: 'black'
+          })
+        })
+
+        l.on("mouseout", (e) => {
+            specialLayer.resetStyle()
+        })
+
+      }
+      
+      
+      //Function to update the imagery beneath the map
+    function historicalImagery( layerName ) {
+      var picOne = document.getElementById('nycImage');
+      //var picTwo = document.getElementById(picID);
+      if (layerName == "NYC 1951") {
+        picOne.src = "./Longshoremen.jpg";
+      } else if (layerName == "NYC 2006") {
+        picOne.src = "./2000sWaterfront.jpg";
+      } else if (layerName == "NYC 2018") {
+        picOne.src = "./BrooklynBridgePark.jpg";
+      }
+      else {
+        picOne.src ="./CityImage.jpg";
+      }
+      console.log("Picture Updated!");
+    }
+      
+      var esriLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+      }).addTo(map);
+      
+      //Add 1951 map
+      var nyc1951Layer = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/photo/1951/{z}/{x}/{y}.png8', {
+        minNativeZoom: 8,
+        maxNativeZoom: 19,
+        subdomains: '1234',
+        bounds: L.latLngBounds([39.3682, -75.9374], [42.0329, -71.7187])
+      });
+      
+      //Add 2006 map
+      var nyc2006Layer = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/photo/2006/{z}/{x}/{y}.png8', {
+        minNativeZoom: 8,
+        maxNativeZoom: 19,
+        subdomains: '1234',
+        bounds: L.latLngBounds([39.3682, -75.9374], [42.0329, -71.7187])
+      });
+      
+      //Add 2018 Map
+      var nyc2018Layer = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/photo/2018/{z}/{x}/{y}.png8', {
+        minNativeZoom: 8,
+        maxNativeZoom: 19,
+        subdomains: '1234',
+        bounds: L.latLngBounds([39.3682, -75.9374], [42.0329, -71.7187])
       });
 
       var zoningLayer = L.geoJSON(null, {
+        style: getStyle,
+        onEachFeature: zoningLayerAction
       }).addTo(map);  
       
-      fetch("./WaterfrontZoning.geojson").then(
-        function(response) {return response.json();}
-      ).then(function(data){
+      $.getJSON("./WaterfrontZoning.geojson", function (data) {
         zoningLayer.addData(data);
       });
       
       var hydroLayer = L.geoJSON(null, {
+        style: function (feature) {
+          return { color: "blue", fill: "#ccc", weight: 2 };
+        },
+        onEachFeature: waterLayerAction
       }).addTo(map);  
-
-      fetch("./HydroFeatures.geojson").then(
-        function(response) {return response.json();}
-      ).then(function(data){
+      
+      $.getJSON("./HydroFeatures.geojson", function (data) {
         hydroLayer.addData(data);
       });
       
+      var specialLayer = L.geoJSON(null, {
+        style: function (feature) {
+          return { color: "red", fill: "#ccc", weight: 2 };
+        },
+        onEachFeature: specialLayerAction
+      }); 
+      
+      $.getJSON("./specialFeatures.geojson", function (data) {
+        specialLayer.addData(data);
+      });
+    
+      
       var baseLayers = {
-        "Esri Map": esriLayer
+        "Esri Map": esriLayer,
+        "NYC 1951": nyc1951Layer,
+        "NYC 2006": nyc2006Layer,
+        "NYC 2018": nyc2018Layer
       };
 
       var vectorLayers = {
         "NycZoning": zoningLayer,
+        "NYCSpecialZoning": specialLayer,
         "NycHydrograpy": hydroLayer
       };
 
-     // L.control.layers(baseLayers, vectorLayers).addTo(map);
+      L.control.layers(baseLayers, vectorLayers).addTo(map);
+      
+      map.on('baselayerchange', function(e) {
+        console.log(e);
+        console.log(e.name);
+        historicalImagery(e.name);
+      });
       
 </script>
-<p>Test 2</p>
+</div>
+<p>The area around the Brooklyn Waterfront has changed dramatically over the course of history. If you click into the top right of the map and select one of the old historical maps you can see an aerial view of the city from that time and below you will see an example of how the Brooklyn waterfront would have looked at the time!</p>
+<p>Take special note of how much the area around Brooklyn Bridge Park has changed in just one century, from a bustling port, to an abandoned dilapidated pier, to an exciting modern park!</p>
+<p><img src="./CityImage.jpg" id="nycImage" width="600" height="400" style="vertical-align:middle"></p>
 
 
 <!-- -->
@@ -745,75 +893,227 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="an">highlight-style:</span><span class="co"> solarized</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu"># Brooklyn's Changing Waterfront</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## New York City's Changing Waterfront</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>Test 1</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>New York City's waterfront is defined by its constant change, ever shifting to fit the needs of the city. The below map tries to help explain the current state of the waterfront as well as explore historical imagery of how the waterfront used to exist.</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"&gt;</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;link</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="in">      rel="stylesheet"</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="in">      href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="in">    /&gt;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>The map below shows the current zoning for areas that exist close to NYC's water features as well as the water features themselves. Information on the water sources and the zoning types can be discovered by hovering over each section.</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>If you find yourself interested in additional NYC zoning laws, I've added one more layer which covers all of the special districts of NYC which are created for very specific reasons. All districts, regardless of proximity to water, have been included to show just how many of these districts special uses are based on the waterfront.</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>::: column-screen</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"&gt;</span></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;script src="https://code.jquery.com/jquery-1.12.4.js"&gt;&lt;/script&gt;</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"&gt;&lt;/script&gt;</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;link</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="in">      rel="stylesheet"</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="in">      href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="in">      integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="in">      crossorigin=""</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="in">    /&gt;</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;script</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="in">      src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="in">      integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;link</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">      rel="stylesheet"</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="in">      href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="in">    /&gt;</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;script src="https://code.jquery.com/jquery-1.12.4.js"&gt;&lt;/script&gt;</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"&gt;&lt;/script&gt;</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;link</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="in">      rel="stylesheet"</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="in">      href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="in">      integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="</span></span>
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="in">      crossorigin=""</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="in">    &gt;&lt;/script&gt;</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div id="map", style="height:600px;"&gt;&lt;/div&gt;</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;script&gt;</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="in">      var map = L.map("map", {</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="in">        zoom: 12,</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="in">        center: [40.6602, -73.9690]</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="in">      });</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="in">      var zoningLayer = L.geoJSON(null, {</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="in">      }).addTo(map);  </span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="in">      fetch("./WaterfrontZoning.geojson").then(</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="in">        function(response) {return response.json();}</span></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="in">      ).then(function(data){</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="in">        zoningLayer.addData(data);</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="in">      });</span></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="in">      var hydroLayer = L.geoJSON(null, {</span></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="in">      }).addTo(map);  </span></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="in">      fetch("./HydroFeatures.geojson").then(</span></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="in">        function(response) {return response.json();}</span></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="in">      ).then(function(data){</span></span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="in">        hydroLayer.addData(data);</span></span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="in">      });</span></span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="in">      var baseLayers = {</span></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="in">        "Esri Map": esriLayer</span></span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="in">      };</span></span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="in">      var vectorLayers = {</span></span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="in">        "NycZoning": zoningLayer,</span></span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="in">        "NycHydrograpy": hydroLayer</span></span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="in">      };</span></span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="in">     // L.control.layers(baseLayers, vectorLayers).addTo(map);</span></span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/script&gt;</span></span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>Test 2</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="in">    /&gt;</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;script</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="in">      src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="in">      integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="in">      crossorigin=""</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="in">    &gt;&lt;/script&gt;</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div id="map", style="height:600px;"&gt;&lt;/div&gt;</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;script&gt;</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="in">// Add in map</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="in">  var map = L.map("map", {</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="in">        zoom: 14,</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="in">        center: [40.7022, -73.9871]</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="in">      });</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="in">      function getColor(d) {</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="in">          return d == "Manufacturing" ? '#FDCC0D' :</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="in">                d == "Park"  ? '#006B3C' :</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="in">                d == "Residential"  ? '#FFB6C1' :</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="in">                            '#808080';</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="in">      }</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="in">      function getStyle(feature) {</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="in">        return {</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="in">            fillColor: getColor(feature.properties.Zoning_Type),</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="in">            weight: 2,</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="in">            opacity: 1,</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="in">            color: 'white',</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="in">            dashArray: '3',</span></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="in">            fillOpacity: 0.7</span></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="in">        };</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="in">      }</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="in">      function zoningLayerAction(feature, l) {</span></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="in">        </span></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="in">        l.bindTooltip(feature.properties.Zoning_Type + " is the zoning type for this Zone.");</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="in">        l.on("mouseover", (e) =&gt; {</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a><span class="in">            e.target.setStyle({</span></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="in">              weight: 3,</span></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a><span class="in">              color: 'black'</span></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="in">          })</span></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="in">        })</span></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a><span class="in">        l.on("mouseout", (e) =&gt; {</span></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="in">            zoningLayer.resetStyle()</span></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="in">        })</span></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="in">      }</span></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="in">      function waterLayerAction(feature, l) {</span></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="in">        </span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="in">        l.bindTooltip("This body of water is " + feature.properties.name);</span></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="in">        l.on("mouseover", (e) =&gt; {</span></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="in">            e.target.setStyle({</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a><span class="in">              weight: 3,</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="in">              color: 'black'</span></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="in">          })</span></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="in">        })</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a><span class="in">        l.on("mouseout", (e) =&gt; {</span></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="in">            hydroLayer.resetStyle()</span></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="in">        })</span></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="in">      }</span></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a><span class="in">      function specialLayerAction(feature, l) {</span></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a><span class="in">        </span></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="in">        l.bindTooltip("This special zone is called " + feature.properties.SDNAME);</span></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a><span class="in">        l.on("mouseover", (e) =&gt; {</span></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="in">            e.target.setStyle({</span></span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a><span class="in">              weight: 3,</span></span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a><span class="in">              color: 'black'</span></span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a><span class="in">          })</span></span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a><span class="in">        })</span></span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a><span class="in">        l.on("mouseout", (e) =&gt; {</span></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a><span class="in">            specialLayer.resetStyle()</span></span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a><span class="in">        })</span></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a><span class="in">      }</span></span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a><span class="in">      //Function to update the imagery beneath the map</span></span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a><span class="in">    function historicalImagery( layerName ) {</span></span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a><span class="in">      var picOne = document.getElementById('nycImage');</span></span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a><span class="in">      //var picTwo = document.getElementById(picID);</span></span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="in">      if (layerName == "NYC 1951") {</span></span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a><span class="in">        picOne.src = "./Longshoremen.jpg";</span></span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a><span class="in">      } else if (layerName == "NYC 2006") {</span></span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a><span class="in">        picOne.src = "./2000sWaterfront.jpg";</span></span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a><span class="in">      } else if (layerName == "NYC 2018") {</span></span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a><span class="in">        picOne.src = "./BrooklynBridgePark.jpg";</span></span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a><span class="in">      }</span></span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a><span class="in">      else {</span></span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a><span class="in">        picOne.src ="./CityImage.jpg";</span></span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a><span class="in">      }</span></span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a><span class="in">      console.log("Picture Updated!");</span></span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a><span class="in">    }</span></span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a><span class="in">      var esriLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {</span></span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a><span class="in">        attribution: 'Tiles &amp;copy; Esri &amp;mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'</span></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a><span class="in">      }).addTo(map);</span></span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a><span class="in">      //Add 1951 map</span></span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a><span class="in">      var nyc1951Layer = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/photo/1951/{z}/{x}/{y}.png8', {</span></span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a><span class="in">        minNativeZoom: 8,</span></span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a><span class="in">        maxNativeZoom: 19,</span></span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a><span class="in">        subdomains: '1234',</span></span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a><span class="in">        bounds: L.latLngBounds([39.3682, -75.9374], [42.0329, -71.7187])</span></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a><span class="in">      });</span></span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a><span class="in">      //Add 2006 map</span></span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a><span class="in">      var nyc2006Layer = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/photo/2006/{z}/{x}/{y}.png8', {</span></span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a><span class="in">        minNativeZoom: 8,</span></span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a><span class="in">        maxNativeZoom: 19,</span></span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a><span class="in">        subdomains: '1234',</span></span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a><span class="in">        bounds: L.latLngBounds([39.3682, -75.9374], [42.0329, -71.7187])</span></span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="in">      });</span></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a><span class="in">      //Add 2018 Map</span></span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a><span class="in">      var nyc2018Layer = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/photo/2018/{z}/{x}/{y}.png8', {</span></span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a><span class="in">        minNativeZoom: 8,</span></span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a><span class="in">        maxNativeZoom: 19,</span></span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a><span class="in">        subdomains: '1234',</span></span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a><span class="in">        bounds: L.latLngBounds([39.3682, -75.9374], [42.0329, -71.7187])</span></span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a><span class="in">      });</span></span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a><span class="in">      var zoningLayer = L.geoJSON(null, {</span></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a><span class="in">        style: getStyle,</span></span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a><span class="in">        onEachFeature: zoningLayerAction</span></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a><span class="in">      }).addTo(map);  </span></span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a><span class="in">      $.getJSON("./WaterfrontZoning.geojson", function (data) {</span></span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a><span class="in">        zoningLayer.addData(data);</span></span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a><span class="in">      });</span></span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="in">      var hydroLayer = L.geoJSON(null, {</span></span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a><span class="in">        style: function (feature) {</span></span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a><span class="in">          return { color: "blue", fill: "#ccc", weight: 2 };</span></span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a><span class="in">        },</span></span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a><span class="in">        onEachFeature: waterLayerAction</span></span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a><span class="in">      }).addTo(map);  </span></span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a><span class="in">      $.getJSON("./HydroFeatures.geojson", function (data) {</span></span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a><span class="in">        hydroLayer.addData(data);</span></span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a><span class="in">      });</span></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a><span class="in">      var specialLayer = L.geoJSON(null, {</span></span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a><span class="in">        style: function (feature) {</span></span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a><span class="in">          return { color: "red", fill: "#ccc", weight: 2 };</span></span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a><span class="in">        },</span></span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a><span class="in">        onEachFeature: specialLayerAction</span></span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a><span class="in">      }); </span></span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a><span class="in">      $.getJSON("./specialFeatures.geojson", function (data) {</span></span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a><span class="in">        specialLayer.addData(data);</span></span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a><span class="in">      });</span></span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a><span class="in">      var baseLayers = {</span></span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a><span class="in">        "Esri Map": esriLayer,</span></span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a><span class="in">        "NYC 1951": nyc1951Layer,</span></span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a><span class="in">        "NYC 2006": nyc2006Layer,</span></span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a><span class="in">        "NYC 2018": nyc2018Layer</span></span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a><span class="in">      };</span></span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a><span class="in">      var vectorLayers = {</span></span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a><span class="in">        "NycZoning": zoningLayer,</span></span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a><span class="in">        "NYCSpecialZoning": specialLayer,</span></span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a><span class="in">        "NycHydrograpy": hydroLayer</span></span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a><span class="in">      };</span></span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a><span class="in">      L.control.layers(baseLayers, vectorLayers).addTo(map);</span></span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a><span class="in">      map.on('baselayerchange', function(e) {</span></span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a><span class="in">        console.log(e);</span></span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a><span class="in">        console.log(e.name);</span></span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a><span class="in">        historicalImagery(e.name);</span></span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a><span class="in">      });</span></span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a><span class="in">      </span></span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/script&gt;</span></span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a>The area around the Brooklyn Waterfront has changed dramatically over the course of history. If you click into the top right of the map and select one of the old historical maps you can see an aerial view of the city from that time and below you will see an example of how the Brooklyn waterfront would have looked at the time!</span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>Take special note of how much the area around Brooklyn Bridge Park has changed in just one century, from a bustling port, to an abandoned dilapidated pier, to an exciting modern park!</span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>&lt;img src="./CityImage.jpg" id="nycImage" width="600" height="400" style="vertical-align:middle"/&gt;</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
