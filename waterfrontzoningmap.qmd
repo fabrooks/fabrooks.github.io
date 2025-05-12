@@ -1,0 +1,82 @@
+---
+title: "Waterfront Zoning"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+highlight-style: solarized
+---
+
+# Brooklyn's Changing Waterfront
+
+Test 1
+
+```{=html}
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+      integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+      integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+      crossorigin=""
+    ></script>
+    
+<div id="map", style="height:600px;"></div>
+
+<script>
+
+      var map = L.map("map", {
+        zoom: 12,
+        center: [40.6602, -73.9690]
+      });
+
+      var esriLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+      }).addTo(map);
+
+      var zoningLayer = L.geoJSON(null, {
+      }).addTo(map);  
+      
+      fetch("./WaterfrontZoning.geojson").then(
+        function(response) {return response.json();}
+      ).then(function(data){
+        zoningLayer.addData(data);
+      });
+      
+      var hydroLayer = L.geoJSON(null, {
+      }).addTo(map);  
+
+      fetch("./HydroFeatures.geojson").then(
+        function(response) {return response.json();}
+      ).then(function(data){
+        hydroLayer.addData(data);
+      });
+      
+      var baseLayers = {
+        "Esri Map": esriLayer
+      };
+
+      var vectorLayers = {
+        "NycZoning": zoningLayer,
+        "NycHydrograpy": hydroLayer
+      };
+
+      L.control.layers(baseLayers, vectorLayers).addTo(map);
+      
+</script>
+```
+
+Test 2

@@ -8,9 +8,7 @@ execute:
 
 Below is a map that I created that shows a census tract breakdown of storm surge risks. Click on any of the census tracts to see additional storm surge data!
 
-::: {.column-screen}
-
-
+::: column-screen
 <!-- Add script to the <head> of your page to load the embeddable map component -->
 
 ```{=html}
@@ -20,5 +18,4 @@ Below is a map that I created that shows a census tract breakdown of storm surge
 <!-- Add custom element to <body> of your page -->
 
 <arcgis-embedded-map style="height:600px;width:100%;" item-id="b2073fae2d7e4b03af8a5900345a94f0" theme="light" portal-url="https://hunter.maps.arcgis.com" heading-enabled legend-enabled ></arcgis-embedded-map>
-
 :::

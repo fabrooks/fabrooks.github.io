@@ -11,6 +11,7 @@ website:
     right:
       - about.qmd
       - codesnippets.qmd
+      - waterfrontzoningmap.qmd
       - text: "Storm Surge Project"
         menu: 
           - href: lettertomayor.qmd
@@ -19,6 +20,8 @@ website:
             icon: map
           - href: stormsurgedata.qmd
             icon: database-fill
+          - href: stomrsurgeleafletmap
+            icon: map-fill
           # target: _blank
 
 format:
