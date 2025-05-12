@@ -1,17 +1,52 @@
 [
   {
-    "objectID": "stormsurgedata.html",
-    "href": "stormsurgedata.html",
-    "title": "Data",
+    "objectID": "waterfrontzoningmap.html",
+    "href": "waterfrontzoningmap.html",
+    "title": "Waterfront Zoning",
     "section": "",
-    "text": "Here is a link to the data that I used for the mapping project!"
+    "text": "Brooklyn’s Changing Waterfront\nTest 1\n    \n\n    \n\n    \n    \n    \n    \n    \n    \n\n\n\nTest 2"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "WebGIS Arthur Brooks",
+    "objectID": "lettertomayor.html",
+    "href": "lettertomayor.html",
+    "title": "Open Letter",
     "section": "",
-    "text": "Welcome to my Quarto website! This site is dedicated to the projects that I create in WebGIS at Hunter College!\n\n\n\nimage\n\n\nThis site is currently a work in progress so check back later for more updates! Happy mapping!\nThe site is hosted on github and running via github pages. The site was created using quarto."
+    "text": "viewof strRecipient = Inputs.text({label: \"Recipient Name\"})\nviewof strAuthor = Inputs.text({label: \"Sender Name\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDear Mayor ,\nI am writing today to spread awareness of an imminent threat facing new york city, storm surges. Did you know that, right now, 361 census tracts are under threat of storm surge in New York City? And not only that, it is projected that by the year 2080 that number will nearly double to 612 census tracts under threat of storm surge. That’s over a quarter of the city! Just look at how bad it’s going to be!\n\n\n\nimage\n\n\nJust kidding! But while I don’t think it’s going to be as bad as it is in the movies, storm surges and flooding are already wreaking havoc in the city. Below is a news story from 2023 about dangers from storms in the city.\n\n\nAs you can see this is a major problem for both the future of NYC and the present day. Below is a list of items that I think the city should take to reduce the threat of storm surges\n\nHousing improvements. Buildings that exist in areas that have the potential for storm surges in the future should be updated to be able to handle those storms.\nAwareness. Residents in zones that are at risk for storm surges should be made aware of the risks in case of future emergencies.\nEngineering. Create additional ways for the city to allow water to runoff such as underground tanks. This allows the city to deal with excess water during a storm.\n\nI have also created a dashboard that displays the census tracts that are under risk and the severity of the potential for storm surges. The link to that storm surge dashboard can be found here\nIf you wish to look further into this issue and explore the data for yourself, the data can be found from the NYC open data site here\nSincerely,"
+  },
+  {
+    "objectID": "dashboard.html",
+    "href": "dashboard.html",
+    "title": "Dashboard",
+    "section": "",
+    "text": "Below is a map that I created that shows a census tract breakdown of storm surge risks. Click on any of the census tracts to see additional storm surge data!"
+  },
+  {
+    "objectID": "dashboard.html#storm-surge-dashes",
+    "href": "dashboard.html#storm-surge-dashes",
+    "title": "Dashboard",
+    "section": "",
+    "text": "Below is a map that I created that shows a census tract breakdown of storm surge risks. Click on any of the census tracts to see additional storm surge data!"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "I am currently in my first year of the GeoInformatics MS program at Hunter College. My intended specialty is working with spatial databases but I’m happily exploring everything the geospatial world has to offer!\n\n\nAs it says on the front page of this website, the work that I like to do is largely database work. I currently work as an analytics engineer for the Natural Resources Defense Council helping run their database for operations. I am enrolled in this geoinformatics program to be able to offer extended help to the organization with geospatial data!\nOne of my greatest passions is swimming, especially open water swimming! New York City is a superb locale for getting out into the water (well maybe not the Hudson after it rains) and during the summer you can find me at Brighton Beach every weekend swimming between Tatiana’s and the Coney Island Pier.\nMy passion for the water influences the geospatial data that I find most interesting which is the city’s changing waterfront and its relationship with the waters that surround it. Come talk waterfront with me!\n\n\n\nRight now I maintain two branches on github for the repository fabrooks.github.io.\nThe first is the main branch and that contains the entire project including it’s quarto files. My workflow here is to\n\ngit add .\ngit commit -m “whatever I changed”\ngit push origin main\n\nAfterI’ve pushed the original code I then push the _site folder as its own independent branch that github pages uses to create my website!\n\ngit subtree push –prefix _site origin gh-pages\n\nAnd voila! My site is updated!"
+  },
+  {
+    "objectID": "about.html#my-interests-personal-and-academic",
+    "href": "about.html#my-interests-personal-and-academic",
+    "title": "About",
+    "section": "",
+    "text": "As it says on the front page of this website, the work that I like to do is largely database work. I currently work as an analytics engineer for the Natural Resources Defense Council helping run their database for operations. I am enrolled in this geoinformatics program to be able to offer extended help to the organization with geospatial data!\nOne of my greatest passions is swimming, especially open water swimming! New York City is a superb locale for getting out into the water (well maybe not the Hudson after it rains) and during the summer you can find me at Brighton Beach every weekend swimming between Tatiana’s and the Coney Island Pier.\nMy passion for the water influences the geospatial data that I find most interesting which is the city’s changing waterfront and its relationship with the waters that surround it. Come talk waterfront with me!"
+  },
+  {
+    "objectID": "about.html#how-this-site-is-maintained",
+    "href": "about.html#how-this-site-is-maintained",
+    "title": "About",
+    "section": "",
+    "text": "Right now I maintain two branches on github for the repository fabrooks.github.io.\nThe first is the main branch and that contains the entire project including it’s quarto files. My workflow here is to\n\ngit add .\ngit commit -m “whatever I changed”\ngit push origin main\n\nAfterI’ve pushed the original code I then push the _site folder as its own independent branch that github pages uses to create my website!\n\ngit subtree push –prefix _site origin gh-pages\n\nAnd voila! My site is updated!"
   },
   {
     "objectID": "codesnippets.html",
@@ -49,45 +84,17 @@
     "text": "Beatify Rank Joins\nHere is a function that takes a ranking between 1 and 12 and returns how it would be viewed both in Text formats, e.g. first, or in numeric formats, e.g. 1st.\n\n\nCode\nviewof inputNum = Inputs.range([1, 12], {step: 1, label: \"Rank\",})\nviewof inputsTextType = Inputs.radio([\"Text\", \"Numeric\"], {label: \"Text output style\", value: \"Text\"})\n\n\nfunction beautifyRank(num, textType) {\n  let textArray = ['First','Second','Third','Fourth','Fifth','Sixth','Seventh','Eighth','Ninth','Tenth','Eleventh','Twelfth'];\n  let numericArray = ['1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th','11th','12th'];\n  let BeautifiedText = (textType == 'Text') ? textArray[num-1] : numericArray[num-1];\n  return BeautifiedText;\n}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n is the  format for rank"
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "WebGIS Arthur Brooks",
     "section": "",
-    "text": "I am currently in my first year of the GeoInformatics MS program at Hunter College. My intended specialty is working with spatial databases but I’m happily exploring everything the geospatial world has to offer!\n\n\nAs it says on the front page of this website, the work that I like to do is largely database work. I currently work as an analytics engineer for the Natural Resources Defense Council helping run their database for operations. I am enrolled in this geoinformatics program to be able to offer extended help to the organization with geospatial data!\nOne of my greatest passions is swimming, especially open water swimming! New York City is a superb locale for getting out into the water (well maybe not the Hudson after it rains) and during the summer you can find me at Brighton Beach every weekend swimming between Tatiana’s and the Coney Island Pier.\nMy passion for the water influences the geospatial data that I find most interesting which is the city’s changing waterfront and its relationship with the waters that surround it. Come talk waterfront with me!\n\n\n\nRight now I maintain two branches on github for the repository fabrooks.github.io.\nThe first is the main branch and that contains the entire project including it’s quarto files. My workflow here is to\n\ngit add .\ngit commit -m “whatever I changed”\ngit push origin main\n\nAfterI’ve pushed the original code I then push the _site folder as its own independent branch that github pages uses to create my website!\n\ngit subtree push –prefix _site origin gh-pages\n\nAnd voila! My site is updated!"
+    "text": "Welcome to my Quarto website! This site is dedicated to the projects that I create in WebGIS at Hunter College!\n\n\n\nimage\n\n\nThis site is currently a work in progress so check back later for more updates! Happy mapping!\nThe site is hosted on github and running via github pages. The site was created using quarto."
   },
   {
-    "objectID": "about.html#my-interests-personal-and-academic",
-    "href": "about.html#my-interests-personal-and-academic",
-    "title": "About",
+    "objectID": "stormsurgedata.html",
+    "href": "stormsurgedata.html",
+    "title": "Data",
     "section": "",
-    "text": "As it says on the front page of this website, the work that I like to do is largely database work. I currently work as an analytics engineer for the Natural Resources Defense Council helping run their database for operations. I am enrolled in this geoinformatics program to be able to offer extended help to the organization with geospatial data!\nOne of my greatest passions is swimming, especially open water swimming! New York City is a superb locale for getting out into the water (well maybe not the Hudson after it rains) and during the summer you can find me at Brighton Beach every weekend swimming between Tatiana’s and the Coney Island Pier.\nMy passion for the water influences the geospatial data that I find most interesting which is the city’s changing waterfront and its relationship with the waters that surround it. Come talk waterfront with me!"
-  },
-  {
-    "objectID": "about.html#how-this-site-is-maintained",
-    "href": "about.html#how-this-site-is-maintained",
-    "title": "About",
-    "section": "",
-    "text": "Right now I maintain two branches on github for the repository fabrooks.github.io.\nThe first is the main branch and that contains the entire project including it’s quarto files. My workflow here is to\n\ngit add .\ngit commit -m “whatever I changed”\ngit push origin main\n\nAfterI’ve pushed the original code I then push the _site folder as its own independent branch that github pages uses to create my website!\n\ngit subtree push –prefix _site origin gh-pages\n\nAnd voila! My site is updated!"
-  },
-  {
-    "objectID": "dashboard.html",
-    "href": "dashboard.html",
-    "title": "Dashboard",
-    "section": "",
-    "text": "Below is a map that I created that shows a census tract breakdown of storm surge risks. Click on any of the census tracts to see additional storm surge data!"
-  },
-  {
-    "objectID": "dashboard.html#storm-surge-dashes",
-    "href": "dashboard.html#storm-surge-dashes",
-    "title": "Dashboard",
-    "section": "",
-    "text": "Below is a map that I created that shows a census tract breakdown of storm surge risks. Click on any of the census tracts to see additional storm surge data!"
-  },
-  {
-    "objectID": "lettertomayor.html",
-    "href": "lettertomayor.html",
-    "title": "Open Letter",
-    "section": "",
-    "text": "viewof strRecipient = Inputs.text({label: \"Recipient Name\"})\nviewof strAuthor = Inputs.text({label: \"Sender Name\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDear Mayor ,\nI am writing today to spread awareness of an imminent threat facing new york city, storm surges. Did you know that, right now, 361 census tracts are under threat of storm surge in New York City? And not only that, it is projected that by the year 2080 that number will nearly double to 612 census tracts under threat of storm surge. That’s over a quarter of the city! Just look at how bad it’s going to be!\n\n\n\nimage\n\n\nJust kidding! But while I don’t think it’s going to be as bad as it is in the movies, storm surges and flooding are already wreaking havoc in the city. Below is a news story from 2023 about dangers from storms in the city.\n\n\nAs you can see this is a major problem for both the future of NYC and the present day. Below is a list of items that I think the city should take to reduce the threat of storm surges\n\nHousing improvements. Buildings that exist in areas that have the potential for storm surges in the future should be updated to be able to handle those storms.\nAwareness. Residents in zones that are at risk for storm surges should be made aware of the risks in case of future emergencies.\nEngineering. Create additional ways for the city to allow water to runoff such as underground tanks. This allows the city to deal with excess water during a storm.\n\nI have also created a dashboard that displays the census tracts that are under risk and the severity of the potential for storm surges. The link to that storm surge dashboard can be found here\nIf you wish to look further into this issue and explore the data for yourself, the data can be found from the NYC open data site here\nSincerely,"
+    "text": "Here is a link to the data that I used for the mapping project!"
   }
 ]
