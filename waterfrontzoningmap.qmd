@@ -130,7 +130,7 @@ If you find yourself interested in additional NYC zoning laws, I've added one mo
       } else if (layerName == "NYC 2006") {
         picOne.src = "./2000sWaterfront.jpg";
       } else if (layerName == "NYC 2018") {
-        picOne.src = "./BrooklynBridgePark.jpg";
+        picOne.src = "./BrooklynBridgePark.jpeg";
       }
       else {
         picOne.src ="./CityImage.jpg";
