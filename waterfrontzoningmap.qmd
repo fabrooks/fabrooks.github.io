@@ -7,10 +7,15 @@ format:
 highlight-style: solarized
 ---
 
-# Brooklyn's Changing Waterfront
+## New York City's Changing Waterfront
 
-Test 1
+New York City's waterfront is defined by its constant change, ever shifting to fit the needs of the city. The below map tries to help explain the current state of the waterfront as well as explore historical imagery of how the waterfront used to exist.
 
+The map below shows the current zoning for areas that exist close to NYC's water features as well as the water features themselves. Information on the water sources and the zoning types can be discovered by hovering over each section.
+
+If you find yourself interested in additional NYC zoning laws, I've added one more layer which covers all of the special districts of NYC which are created for very specific reasons. All districts, regardless of proximity to water, have been included to show just how many of these districts special uses are based on the waterfront.
+
+::: column-screen
 ```{=html}
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
@@ -33,50 +38,193 @@ Test 1
       integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
       crossorigin=""
     ></script>
-    
+
 <div id="map", style="height:600px;"></div>
+
 
 <script>
 
-      var map = L.map("map", {
-        zoom: 12,
-        center: [40.6602, -73.9690]
+// Add in map
+  var map = L.map("map", {
+        zoom: 14,
+        center: [40.7022, -73.9871]
       });
 
+      
+      function getColor(d) {
+          return d == "Manufacturing" ? '#FDCC0D' :
+                d == "Park"  ? '#006B3C' :
+                d == "Residential"  ? '#FFB6C1' :
+                            '#808080';
+      }
+
+      function getStyle(feature) {
+        return {
+            fillColor: getColor(feature.properties.Zoning_Type),
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            dashArray: '3',
+            fillOpacity: 0.7
+        };
+      }
+
+      function zoningLayerAction(feature, l) {
+        
+        l.bindTooltip(feature.properties.Zoning_Type + " is the zoning type for this Zone.");
+
+        l.on("mouseover", (e) => {
+            e.target.setStyle({
+              weight: 3,
+              color: 'black'
+          })
+        })
+
+        l.on("mouseout", (e) => {
+            zoningLayer.resetStyle()
+        })
+
+      }
+      
+      function waterLayerAction(feature, l) {
+        
+        l.bindTooltip("This body of water is " + feature.properties.name);
+
+        l.on("mouseover", (e) => {
+            e.target.setStyle({
+              weight: 3,
+              color: 'black'
+          })
+        })
+
+        l.on("mouseout", (e) => {
+            hydroLayer.resetStyle()
+        })
+
+      }
+      
+      function specialLayerAction(feature, l) {
+        
+        l.bindTooltip("This special zone is called " + feature.properties.SDNAME);
+
+        l.on("mouseover", (e) => {
+            e.target.setStyle({
+              weight: 3,
+              color: 'black'
+          })
+        })
+
+        l.on("mouseout", (e) => {
+            specialLayer.resetStyle()
+        })
+
+      }
+      
+      
+      //Function to update the imagery beneath the map
+    function historicalImagery( layerName ) {
+      var picOne = document.getElementById('nycImage');
+      //var picTwo = document.getElementById(picID);
+      if (layerName == "NYC 1951") {
+        picOne.src = "./Longshoremen.jpg";
+      } else if (layerName == "NYC 2006") {
+        picOne.src = "./2000sWaterfront.jpg";
+      } else if (layerName == "NYC 2018") {
+        picOne.src = "./BrooklynBridgePark.jpg";
+      }
+      else {
+        picOne.src ="./CityImage.jpg";
+      }
+      console.log("Picture Updated!");
+    }
+      
       var esriLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
       }).addTo(map);
+      
+      //Add 1951 map
+      var nyc1951Layer = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/photo/1951/{z}/{x}/{y}.png8', {
+        minNativeZoom: 8,
+        maxNativeZoom: 19,
+        subdomains: '1234',
+        bounds: L.latLngBounds([39.3682, -75.9374], [42.0329, -71.7187])
+      });
+      
+      //Add 2006 map
+      var nyc2006Layer = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/photo/2006/{z}/{x}/{y}.png8', {
+        minNativeZoom: 8,
+        maxNativeZoom: 19,
+        subdomains: '1234',
+        bounds: L.latLngBounds([39.3682, -75.9374], [42.0329, -71.7187])
+      });
+      
+      //Add 2018 Map
+      var nyc2018Layer = L.tileLayer('https://maps.nyc.gov/xyz/1.0.0/photo/2018/{z}/{x}/{y}.png8', {
+        minNativeZoom: 8,
+        maxNativeZoom: 19,
+        subdomains: '1234',
+        bounds: L.latLngBounds([39.3682, -75.9374], [42.0329, -71.7187])
+      });
 
       var zoningLayer = L.geoJSON(null, {
+        style: getStyle,
+        onEachFeature: zoningLayerAction
       }).addTo(map);  
       
-      fetch("./WaterfrontZoning.geojson").then(
-        function(response) {return response.json();}
-      ).then(function(data){
+      $.getJSON("./WaterfrontZoning.geojson", function (data) {
         zoningLayer.addData(data);
       });
       
       var hydroLayer = L.geoJSON(null, {
+        style: function (feature) {
+          return { color: "blue", fill: "#ccc", weight: 2 };
+        },
+        onEachFeature: waterLayerAction
       }).addTo(map);  
-
-      fetch("./HydroFeatures.geojson").then(
-        function(response) {return response.json();}
-      ).then(function(data){
+      
+      $.getJSON("./HydroFeatures.geojson", function (data) {
         hydroLayer.addData(data);
       });
       
+      var specialLayer = L.geoJSON(null, {
+        style: function (feature) {
+          return { color: "red", fill: "#ccc", weight: 2 };
+        },
+        onEachFeature: specialLayerAction
+      }); 
+      
+      $.getJSON("./specialFeatures.geojson", function (data) {
+        specialLayer.addData(data);
+      });
+    
+      
       var baseLayers = {
-        "Esri Map": esriLayer
+        "Esri Map": esriLayer,
+        "NYC 1951": nyc1951Layer,
+        "NYC 2006": nyc2006Layer,
+        "NYC 2018": nyc2018Layer
       };
 
       var vectorLayers = {
         "NycZoning": zoningLayer,
+        "NYCSpecialZoning": specialLayer,
         "NycHydrograpy": hydroLayer
       };
 
       L.control.layers(baseLayers, vectorLayers).addTo(map);
       
+      map.on('baselayerchange', function(e) {
+        console.log(e);
+        console.log(e.name);
+        historicalImagery(e.name);
+      });
+      
 </script>
 ```
+:::
 
-Test 2
+The area around the Brooklyn Waterfront has changed dramatically over the course of history. If you click into the top right of the map and select one of the old historical maps you can see an aerial view of the city from that time and below you will see an example of how the Brooklyn waterfront would have looked at the time!
+
+Take special note of how much the area around Brooklyn Bridge Park has changed in just one century, from a bustling port, to an abandoned dilapidated pier, to an exciting modern park!
+
+<img src="./CityImage.jpg" id="nycImage" width="600" height="400" style="vertical-align:middle"/>

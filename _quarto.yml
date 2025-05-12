@@ -1,6 +1,9 @@
 project:
   type: website
-
+  render:
+    - "*.qmd"
+    - "WaterfrontZoning.geojson"
+    
 website:
   title: "WebGIS Arthur Brooks"
   navbar:
